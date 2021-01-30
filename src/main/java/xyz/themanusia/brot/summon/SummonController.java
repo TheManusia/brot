@@ -2,87 +2,105 @@ package xyz.themanusia.brot.summon;
 
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class SummonController implements SummonRepository {
-    private SummonEntity summonEntity;
-    private MessageReceivedEvent event;
-    private MessageChannel chnl;
-    private int a = 0;
+    ArrayList<SummonEntity> arrayList = new ArrayList<>();
 
     @Override
     public void onStartSummon(SummonEntity se, MessageReceivedEvent event) {
-        summonEntity = se;
-        this.event = event;
-        chnl = event.getChannel();
+        MessageChannel chnl = event.getChannel();
         Message summoning = new MessageBuilder()
                 .append("https://tenor.com/view/kuchiyose-no-jutsu-summoning-gif-13501965")
                 .build();
-        chnl.sendMessage(summoning).queue(message -> summoning());
+        arrayList.add(se);
+        chnl.sendMessage(summoning).queue(message -> {
+            message.delete().queueAfter(3, TimeUnit.SECONDS);
+            summoning(message, se, 0);
+        });
     }
 
     @SneakyThrows
-    private void summoning() {
+    private void summoning(Message message, SummonEntity summonEntity, int a) {
+        MessageChannel chnl = message.getChannel();
         try {
             if (summonEntity != null) {
                 if (a < 10) {
                     TimeUnit.SECONDS.sleep(3);
-                    chnl.sendMessage(new MessageBuilder()
-                            .append(summonEntity.getSummon()).build())
-                            .queue();
-                    summonEntity.getSummon().openPrivateChannel().queue(c -> c.sendMessage(new MessageBuilder().append("You're being summoned by ")
-                            .append(summonEntity.getSummoner().getAsTag())
-                            .build()).queue());
-                    a++;
+                    if (!summonEntity.isSummoned()) {
+                        chnl.sendMessage(new MessageBuilder()
+                                .append(summonEntity.getSummon()).build())
+                                .queue();
+                        summonEntity.getSummon().openPrivateChannel().queue(c -> c.sendMessage(new MessageBuilder().append("You're being summoned by ")
+                                .append(summonEntity.getSummoner().getAsTag())
+                                .append(" in ")
+                                .append(message.getGuild().getName())
+                                .build()).queue());
+                        a++;
+                    }
                 } else {
-                    summonEntity.setSummoned(true);
-                    event.getChannel().sendMessage(new MessageBuilder()
-                            .append("User can't be summoned").build())
-                            .queue();
-                    summonEntity = null;
+                    doneSummon(new MessageBuilder()
+                            .append("User can't be summoned").build(), message.getGuild(), chnl);
                 }
-                if (summonEntity != null)
-                    if (!summonEntity.isSummoned())
-                        summoning();
+                if (!summonEntity.isSummoned())
+                    summoning(message, summonEntity, a);
             }
-        } catch (NullPointerException ignore) {}
+        } catch (NullPointerException ignore) {
+        }
     }
 
     @Override
-    public void onCancelSummon() {
+    public void onCancelSummon(Guild guild, MessageChannel channel) {
         doneSummon(new MessageBuilder()
                 .append("Summoning has been canceled")
-                .build());
+                .build(), guild, channel);
     }
 
     @Override
-    public void onSummoned() {
+    public void onSummoned(Guild guild, MessageChannel channel) {
         doneSummon(new MessageBuilder()
                 .append("User has been summoned\n")
                 .append("Have a nice day!")
-                .build());
+                .build(), guild, channel);
     }
 
     @Override
-    public boolean isSummon(User user) {
+    public boolean isSummon(User user, Guild guild) {
+        SummonEntity summonEntity = getEntity(guild);
         if (summonEntity != null)
             return summonEntity.getSummon().getId().equals(user.getId());
         return false;
     }
 
     @Override
-    public boolean isEmpty() {
-        return summonEntity == null;
+    public boolean isEmpty(Guild guild) {
+        return getEntity(guild) == null;
     }
 
-    private void doneSummon(Message msg) {
-        summonEntity.setSummoned(true);
-        chnl.sendMessage(msg).queue();
-        summonEntity = null;
+    private void doneSummon(Message msg, Guild guild, MessageChannel chnl) {
+        SummonEntity summonEntity = getEntity(guild);
+        if (summonEntity != null) {
+            summonEntity.setSummoned(true);
+            chnl.sendMessage(msg).queue();
+            arrayList.remove(summonEntity);
+        }
+    }
+
+    private SummonEntity getEntity(Guild guild) {
+        List<SummonEntity> summonEntity = arrayList.stream()
+                .filter(s -> s.getGuildId().equals(guild.getId()))
+                .collect(Collectors.toList());
+        if (summonEntity.isEmpty())
+            return null;
+        return summonEntity.get(0);
     }
 }

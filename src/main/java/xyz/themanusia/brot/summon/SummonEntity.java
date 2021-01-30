@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.User;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SummonEntity {
+    private String guildId;
     private User summoner;
     private User summon;
     private boolean isSummoned = false;
