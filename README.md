@@ -15,6 +15,10 @@ V1.2
 
 - Delete message after 3 second
 
+V1.3
+
+- Avoid self summoning 
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
