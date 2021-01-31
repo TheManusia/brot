@@ -4,7 +4,7 @@ import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import xyz.themanusia.brot.summon.Summon;
+import xyz.themanusia.brot.summon.SummonListener;
 
 public class Main {
     @SneakyThrows
@@ -14,7 +14,7 @@ public class Main {
         builder.setActivity(Activity.watching("for sauce"));
 
         JDA client = builder.build();
-        client.addEventListener(new Summon());
+        client.addEventListener(new SummonListener());
 
     }
 }

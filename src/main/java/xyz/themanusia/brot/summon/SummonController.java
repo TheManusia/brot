@@ -1,11 +1,9 @@
 package xyz.themanusia.brot.summon;
 
 import lombok.SneakyThrows;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
@@ -19,11 +17,19 @@ public class SummonController implements SummonRepository {
     private static final int DELAY = 3;
     private static final TimeUnit TIME = TimeUnit.SECONDS;
 
+    private static final String START = "https://media.discordapp.net/attachments/790982389441757195/805430704430776340/tenor_4.gif";
+    private static final String CANCEL = "https://media.discordapp.net/attachments/790982389441757195/805430646645719080/ezgif.com-gif-maker.gif";
+    private static final String FAILED = "https://media.discordapp.net/attachments/790982389441757195/805430684592111636/tenor_3.gif";
+    private static final String SUCCESS = "https://media.discordapp.net/attachments/790982389441757195/805430714258161724/ezgif-7-55441c58ca45.gif";
+
     @Override
     public void onStartSummon(SummonEntity se, MessageReceivedEvent event) {
         MessageChannel chnl = event.getChannel();
         Message summoning = new MessageBuilder()
-                .append("https://tenor.com/view/kuchiyose-no-jutsu-summoning-gif-13501965")
+                .setEmbed(new EmbedBuilder()
+                        .setTitle("Kuchiyose no Jutsu!")
+                        .setImage(START)
+                        .build())
                 .build();
         arrayList.add(se);
         chnl.sendMessage(summoning).queue(message -> {
@@ -45,15 +51,18 @@ public class SummonController implements SummonRepository {
                                 .queue(s -> s.delete().queueAfter(DELAY, TIME));
                         summonEntity.getSummon().openPrivateChannel().queue(c ->
                                 c.sendMessage(new MessageBuilder().append("You're being summoned by ")
-                                .append(summonEntity.getSummoner().getAsTag())
-                                .append(" in ")
-                                .append(message.getGuild().getName())
-                                .build()).queue(s -> s.delete().queueAfter(DELAY, TIME)));
+                                        .append(summonEntity.getSummoner().getAsTag())
+                                        .append(" in ")
+                                        .append(message.getGuild().getName())
+                                        .build()).queue(s -> s.delete().queueAfter(DELAY, TIME)));
                         a++;
                     }
                 } else {
                     doneSummon(new MessageBuilder()
-                            .append("User can't be summoned").build(), message.getGuild(), chnl);
+                            .setEmbed(new EmbedBuilder()
+                                    .setImage(FAILED)
+                                    .setTitle("User can't be summoned")
+                                    .build()).build(), message.getGuild(), chnl);
                 }
                 if (!summonEntity.isSummoned())
                     summoning(message, summonEntity, a);
@@ -65,15 +74,21 @@ public class SummonController implements SummonRepository {
     @Override
     public void onCancelSummon(Guild guild, MessageChannel channel) {
         doneSummon(new MessageBuilder()
-                .append("Summoning has been canceled")
+                .setEmbed(new EmbedBuilder()
+                        .setTitle("Summoning has been canceled")
+                        .setImage(CANCEL)
+                        .build())
                 .build(), guild, channel);
     }
 
     @Override
     public void onSummoned(Guild guild, MessageChannel channel) {
         doneSummon(new MessageBuilder()
-                .append("User has been summoned\n")
-                .append("Have a nice day!")
+                .setEmbed(new EmbedBuilder()
+                        .setImage(SUCCESS)
+                        .setTitle("User has been summoned")
+                        .setDescription("Have a nice day!")
+                        .build())
                 .build(), guild, channel);
     }
 

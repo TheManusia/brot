@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-public class Summon extends ListenerAdapter {
+public class SummonListener extends ListenerAdapter {
     private final SummonRepository summonRepository = new SummonController();
 
     @Override
