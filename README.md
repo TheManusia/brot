@@ -1,23 +1,15 @@
+[![Made With Love](https://img.shields.io/badge/Made%20With-Love-orange.svg)](https://github.com/chetanraj/awesome-github-badges)
+
 # Brot
 
 Brot is my homemade bot. It just for fun
 
-V1.0
+## Feature
 
-- Summon User Feature
+- Summon User
+- Anime Search
 
-V1.1
-
-- Can run in multiple server
-- Delete gif after 3 second
-
-V1.2
-
-- Delete message after 3 second
-
-V1.3
-
-- Avoid self summoning 
+Made With [Jikan Api](https://jikan.moe/)
 
 ## License
 

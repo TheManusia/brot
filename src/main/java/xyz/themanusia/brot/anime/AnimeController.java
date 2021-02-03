@@ -5,9 +5,12 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import xyz.themanusia.brot.network.jikan.JikanCore;
 import xyz.themanusia.brot.network.jikan.callback.JikanAnimeCallback;
+import xyz.themanusia.brot.network.jikan.callback.JikanAnimeSearchCallback;
 import xyz.themanusia.brot.network.jikan.response.Anime;
+import xyz.themanusia.brot.network.jikan.response.AnimeSearch;
 import xyz.themanusia.brot.network.jikan.response.Genre;
 
 import java.util.stream.Collectors;
@@ -15,11 +18,26 @@ import java.util.stream.Collectors;
 public class AnimeController implements AnimeRepository {
     JikanCore jikanCore;
 
+    public AnimeController() {
+        jikanCore = new JikanCore();
+    }
+
     @Override
     public void getAnimeById(MessageChannel channel, int id) {
-        jikanCore = new JikanCore();
-        channel.sendMessage(":mag: Searching...").queue(message -> sendMessageAnime(id, message));
+        searching(channel).queue(message ->
+                sendMessageAnime(id, message)
+        );
+    }
 
+    @Override
+    public void searchAnime(MessageChannel channel, String keyword) {
+        searching(channel).queue(message ->
+                sendMessageAnimes(keyword, message)
+        );
+    }
+
+    private MessageAction searching(MessageChannel channel) {
+        return channel.sendMessage(":mag: Searching...");
     }
 
     private void sendMessageAnime(int id, Message message) {
@@ -48,6 +66,33 @@ public class AnimeController implements AnimeRepository {
                         .setEmbed(embedBuilder)
                         .build())
                         .append("Anime Found")
+                        .queue();
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                message.editMessage(msg).queue();
+            }
+        });
+    }
+
+    private void sendMessageAnimes(String keyword, Message message) {
+        jikanCore.searchAnime(keyword, new JikanAnimeSearchCallback() {
+            @Override
+            public void onGetAnimesSuccess(AnimeSearch results) {
+                String result = results.getResults().stream()
+                        .map(anime -> anime.getMalId() + "#" + anime.getTitle())
+                        .limit(10)
+                        .collect(Collectors.joining("\n"));
+                MessageEmbed embedBuilder = new EmbedBuilder()
+                        .setTitle("Top 10 Results")
+                        .setDescription(result)
+                        .build();
+                message.editMessage(
+                        new MessageBuilder()
+                                .setEmbed(embedBuilder)
+                                .append("Animes Found")
+                                .build())
                         .queue();
             }
 
