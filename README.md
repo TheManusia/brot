@@ -13,4 +13,4 @@ Made With [Jikan Api](https://jikan.moe/)
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://github.com/TheManusia/brot/blob/master/LICENSE)
