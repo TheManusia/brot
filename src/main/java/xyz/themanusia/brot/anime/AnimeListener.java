@@ -23,7 +23,6 @@ public class AnimeListener extends ListenerAdapter {
                     String keyword = Arrays.stream(msg)
                             .filter(s -> !s.matches("(&anime)|(-search)|(-s)"))
                             .collect(Collectors.joining(" ")).trim();
-                    System.out.println(keyword);
                     repository.searchAnime(event.getChannel(), keyword);
                 }
             } else {
