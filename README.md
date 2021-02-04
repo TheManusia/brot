@@ -8,6 +8,7 @@ Brot is my homemade bot. It just for fun
 
 - Summon User
 - Anime Search
+- Manga Search
 
 Made With [Jikan Api](https://jikan.moe/)
 

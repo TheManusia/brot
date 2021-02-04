@@ -6,4 +6,8 @@ public interface AnimeRepository {
     void getAnimeById(MessageChannel channel, int id);
 
     void searchAnime(MessageChannel channel, String keyword);
+
+    void getMangaById(MessageChannel channel, int id);
+
+    void searchManga(MessageChannel channel, String keyword);
 }

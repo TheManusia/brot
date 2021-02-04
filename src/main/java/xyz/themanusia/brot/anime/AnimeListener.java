@@ -28,6 +28,19 @@ public class AnimeListener extends ListenerAdapter {
             } else {
                 event.getChannel().sendMessage("Insert Parameter!").queue();
             }
+        } else if (msg[0].contains("&manga")) {
+            if (msg.length > 1) {
+                if (msg[1].matches("[0-9]*")) {
+                    repository.getMangaById(event.getChannel(), Integer.parseInt(msg[1]));
+                } else if (msg[1].equalsIgnoreCase("-search") || msg[1].equalsIgnoreCase("-s")) {
+                    String keyword = Arrays.stream(msg)
+                            .filter(s -> !s.matches("(&anime)|(-search)|(-s)"))
+                            .collect(Collectors.joining(" ")).trim();
+                    repository.searchManga(event.getChannel(), keyword);
+                }
+            } else {
+                event.getChannel().sendMessage("Insert Parameter!").queue();
+            }
         }
     }
 }
