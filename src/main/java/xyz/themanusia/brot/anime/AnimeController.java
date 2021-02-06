@@ -12,14 +12,19 @@ import xyz.themanusia.brot.network.jikan.callback.JikanAnimeSearchCallback;
 import xyz.themanusia.brot.network.jikan.callback.JikanMangaCallback;
 import xyz.themanusia.brot.network.jikan.callback.JikanMangaSearchCallback;
 import xyz.themanusia.brot.network.jikan.response.*;
+import xyz.themanusia.brot.network.tracemoe.TraceMoeCore;
+import xyz.themanusia.brot.network.tracemoe.callback.TraceMoeCallback;
+import xyz.themanusia.brot.network.tracemoe.response.Sauce;
 
 import java.util.stream.Collectors;
 
 public class AnimeController implements AnimeRepository {
     JikanCore jikanCore;
+    TraceMoeCore traceMoeCore;
 
     public AnimeController() {
         jikanCore = new JikanCore();
+        traceMoeCore = new TraceMoeCore();
     }
 
     @Override
@@ -34,6 +39,29 @@ public class AnimeController implements AnimeRepository {
         searching(channel).queue(message ->
                 sendMessageAnimes(keyword, message)
         );
+    }
+
+    @Override
+    public void searchAnimeWithPict(MessageChannel channel, String image) {
+        searching(channel).queue(message -> traceMoeCore.getSauce(image, new TraceMoeCallback() {
+            @Override
+            public void onSuccess(Sauce sauce) {
+                sendMessageAnime(sauce.getMalId(), message);
+                message.getChannel().sendMessage(new MessageBuilder()
+                        .append("Similarity: ")
+                        .append(String.valueOf((int) (sauce.getSimilarity() * 100)))
+                        .append("%\n")
+                        .append("From Episode ")
+                        .append(String.valueOf(sauce.getEpisode()))
+                        .build()
+                ).queue();
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                message.editMessage(msg).queue();
+            }
+        }));
     }
 
     @Override

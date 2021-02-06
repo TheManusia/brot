@@ -24,6 +24,12 @@ public class AnimeListener extends ListenerAdapter {
                             .filter(s -> !s.matches("(&anime)|(-search)|(-s)"))
                             .collect(Collectors.joining(" ")).trim();
                     repository.searchAnime(event.getChannel(), keyword);
+                } else if (msg[1].equalsIgnoreCase("-pic") || msg[1].equalsIgnoreCase("-picture")) {
+                    if (!event.getMessage().getAttachments().isEmpty()) {
+                        repository.searchAnimeWithPict(event.getChannel(), event.getMessage().getAttachments().get(0).getUrl());
+                    } else {
+                        event.getChannel().sendMessage("Insert Picture!").queue();
+                    }
                 }
             } else {
                 event.getChannel().sendMessage("Insert Parameter!").queue();

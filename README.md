@@ -9,8 +9,12 @@ Brot is my homemade bot. It just for fun
 - Summon User
 - Anime Search
 - Manga Search
+- Anime Scene Search
 
-Made With [Jikan Api](https://jikan.moe/)
+### API
+
+- [Jikan Api](https://jikan.moe/)
+- [Trace.moe](https://soruly.github.io/trace.moe)
 
 ## License
 
