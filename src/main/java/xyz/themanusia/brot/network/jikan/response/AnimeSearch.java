@@ -1,7 +1,10 @@
 package xyz.themanusia.brot.network.jikan.response;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -9,9 +12,9 @@ import java.util.ArrayList;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class AnimeSearch{
 
-	@SerializedName("results")
-	private ArrayList<AnimeSearchItem> results;
+public class AnimeSearch {
+
+    @SerializedName("results")
+    private ArrayList<AnimeSearchItem> results;
 }

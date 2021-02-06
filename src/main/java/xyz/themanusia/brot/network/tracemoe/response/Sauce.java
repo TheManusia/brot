@@ -1,11 +1,12 @@
 package xyz.themanusia.brot.network.tracemoe.response;
 
 import com.google.gson.annotations.SerializedName;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+
 public class Sauce {
 
     @SerializedName("episode")

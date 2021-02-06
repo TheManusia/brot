@@ -12,18 +12,18 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ResultHeader {
 
-	@SerializedName("thumbnail")
-	private String thumbnail;
+    @SerializedName("thumbnail")
+    private String thumbnail;
 
-	@SerializedName("dupes")
-	private int dupes;
+    @SerializedName("dupes")
+    private int dupes;
 
-	@SerializedName("similarity")
-	private String similarity;
+    @SerializedName("similarity")
+    private String similarity;
 
-	@SerializedName("index_id")
-	private int indexId;
+    @SerializedName("index_id")
+    private int indexId;
 
-	@SerializedName("index_name")
-	private String indexName;
+    @SerializedName("index_name")
+    private String indexName;
 }

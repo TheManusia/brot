@@ -24,7 +24,7 @@ public class SummonListener extends ListenerAdapter {
                         if (msg.getMentionedMembers().get(0).getUser().isBot()) {
                             chnl.sendMessage("Can't summon bot!").queue();
                         } else {
-                            if (msg.getMentionedMembers().get(0).getUser() == msg.getAuthor()){
+                            if (msg.getMentionedMembers().get(0).getUser() == msg.getAuthor()) {
                                 chnl.sendMessage("You can't summon yourself").queue();
                             } else {
                                 summonRepository.onStartSummon(new SummonEntity(

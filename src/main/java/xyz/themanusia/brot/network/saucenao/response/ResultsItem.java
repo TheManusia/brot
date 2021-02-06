@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResultsItem{
+public class ResultsItem {
 
-	@SerializedName("data")
-	private Data data;
+    @SerializedName("data")
+    private Data data;
 
-	@SerializedName("header")
-	private ResultHeader resultHeader;
+    @SerializedName("header")
+    private ResultHeader resultHeader;
 }
