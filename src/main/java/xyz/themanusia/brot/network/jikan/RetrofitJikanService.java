@@ -1,12 +1,11 @@
-package xyz.themanusia.brot.network;
+package xyz.themanusia.brot.network.jikan;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.Retrofit.Builder;
 import retrofit2.converter.gson.GsonConverterFactory;
-import xyz.themanusia.brot.network.jikan.JikanService;
 
-public class RetrofitService {
+public class RetrofitJikanService {
     private static final String URL = "https://api.jikan.moe/v3/";
 
     public JikanService getService() {

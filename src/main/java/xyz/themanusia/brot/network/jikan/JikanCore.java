@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import xyz.themanusia.brot.network.RetrofitService;
 import xyz.themanusia.brot.network.jikan.callback.JikanAnimeCallback;
 import xyz.themanusia.brot.network.jikan.callback.JikanAnimeSearchCallback;
 import xyz.themanusia.brot.network.jikan.callback.JikanMangaCallback;
@@ -16,11 +15,10 @@ import xyz.themanusia.brot.network.jikan.response.MangaSearch;
 
 public class JikanCore {
     private final JikanService service;
-    private Anime anime;
 
     public JikanCore() {
-        RetrofitService retrofitService = new RetrofitService();
-        service = retrofitService.getService();
+        RetrofitJikanService retrofitJikanService = new RetrofitJikanService();
+        service = retrofitJikanService.getService();
     }
 
     public void getAnimeById(int id, JikanAnimeCallback callback) {
@@ -30,8 +28,7 @@ public class JikanCore {
             public void onResponse(@NotNull Call<Anime> call, @NotNull Response<Anime> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        anime = response.body();
-                        callback.onGetAnimeSuccess(anime);
+                        callback.onGetAnimeSuccess(response.body());
                     } else {
                         callback.onFailure("Anime not found");
                     }
