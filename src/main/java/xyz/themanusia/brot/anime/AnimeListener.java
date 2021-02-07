@@ -2,7 +2,6 @@ package xyz.themanusia.brot.anime;
 
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import xyz.themanusia.brot.listener.BrotListenerAdapter;
 
@@ -28,6 +27,8 @@ public class AnimeListener extends BrotListenerAdapter {
                 } else if (msg[1].equalsIgnoreCase("-pic") || msg[1].equalsIgnoreCase("-picture")) {
                     if (!event.getMessage().getAttachments().isEmpty()) {
                         repository.searchAnimeWithPict(event.getChannel(), event.getMessage().getAttachments().get(0).getUrl());
+                    } else if (msg.length > 2) {
+                        repository.searchAnimeWithPict(event.getChannel(), msg[2]);
                     } else {
                         event.getChannel().sendMessage("Insert Picture!").queue();
                     }

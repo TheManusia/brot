@@ -32,7 +32,7 @@ public class BrotListenerAdapter extends ListenerAdapter implements BrotListener
 
         String anime = "**anime** `id` - Show anime by id (You can get anime id from MyAnimeList)\n" +
                 "**anime** `-s` | `-search` `keyword` - Search anime\n" +
-                "**anime** `-pic` | `-picture` - Search anime with picture of anime scene";
+                "**anime** `-pic` | `-picture` `url` | `picture` - Search anime with picture of anime scene";
 
         channel.sendMessage(new EmbedBuilder()
                 .setTitle("Brot Command List")
