@@ -13,7 +13,9 @@ public class BrotListenerAdapter extends ListenerAdapter implements BrotListener
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.getMessage().isFromGuild()) {
-            onMessageChecked(event);
+            if (!event.getAuthor().isBot()) {
+                onMessageChecked(event);
+            }
         }
     }
 
