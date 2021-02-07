@@ -6,6 +6,8 @@ import xyz.themanusia.brot.network.saucenao.SauceNaoCore;
 import xyz.themanusia.brot.network.saucenao.callback.SauceCallback;
 import xyz.themanusia.brot.network.saucenao.response.Sauce;
 
+import java.awt.*;
+
 public class SauceController implements SauceRepository {
     private final SauceNaoCore sauceNaoCore;
 
@@ -21,6 +23,7 @@ public class SauceController implements SauceRepository {
                     public void onSuccess(Sauce sauce) {
                         String name = (sauce.getName() == null) ? "-" : sauce.getName();
                         message.editMessage(new EmbedBuilder()
+                                .setColor(new Color(247, 239, 198))
                                 .setTitle(sauce.getName(), sauce.getUrl())
                                 .setImage(sauce.getThumbnail())
                                 .addField("Similarity", sauce.getSimilarity(), true)

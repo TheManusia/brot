@@ -4,16 +4,17 @@ import lombok.SneakyThrows;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import xyz.themanusia.brot.listener.BrotListenerAdapter;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class AnimeListener extends ListenerAdapter {
+public class AnimeListener extends BrotListenerAdapter {
     AnimeRepository repository = new AnimeController();
 
     @SneakyThrows
     @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+    public void onMessageChecked(@NotNull MessageReceivedEvent event) {
         String[] msg = event.getMessage().getContentDisplay().split(" ");
         if (msg[0].contains("&anime")) {
             if (msg.length > 1) {

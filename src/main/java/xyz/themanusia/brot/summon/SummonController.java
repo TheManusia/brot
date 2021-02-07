@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,7 @@ public class SummonController implements SummonRepository {
         MessageChannel chnl = event.getChannel();
         Message summoning = new MessageBuilder()
                 .setEmbed(new EmbedBuilder()
+                        .setColor(new Color(247, 239, 198))
                         .setTitle("Kuchiyose no Jutsu!")
                         .setImage(START)
                         .build())
@@ -63,6 +65,7 @@ public class SummonController implements SummonRepository {
                 } else {
                     doneSummon(new MessageBuilder()
                             .setEmbed(new EmbedBuilder()
+                                    .setColor(new Color(247, 239, 198))
                                     .setImage(FAILED)
                                     .setTitle("User can't be summoned")
                                     .build()).build(), message.getGuild(), chnl);
@@ -78,6 +81,7 @@ public class SummonController implements SummonRepository {
     public void onCancelSummon(Guild guild, MessageChannel channel) {
         doneSummon(new MessageBuilder()
                 .setEmbed(new EmbedBuilder()
+                        .setColor(new Color(247, 239, 198))
                         .setTitle("Summoning has been canceled")
                         .setImage(CANCEL)
                         .build())
@@ -88,6 +92,7 @@ public class SummonController implements SummonRepository {
     public void onSummoned(Guild guild, MessageChannel channel) {
         doneSummon(new MessageBuilder()
                 .setEmbed(new EmbedBuilder()
+                        .setColor(new Color(247, 239, 198))
                         .setImage(SUCCESS)
                         .setTitle("User has been summoned")
                         .setDescription("Have a nice day!")

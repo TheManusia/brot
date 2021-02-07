@@ -16,6 +16,7 @@ import xyz.themanusia.brot.network.tracemoe.TraceMoeCore;
 import xyz.themanusia.brot.network.tracemoe.callback.TraceMoeCallback;
 import xyz.themanusia.brot.network.tracemoe.response.Sauce;
 
+import java.awt.*;
 import java.util.stream.Collectors;
 
 public class AnimeController implements AnimeRepository {
@@ -94,6 +95,7 @@ public class AnimeController implements AnimeRepository {
                         .map(Genre::getName)
                         .collect(Collectors.joining(", "));
                 MessageEmbed embedBuilder = new EmbedBuilder()
+                        .setColor(new Color(247, 239, 198))
                         .setTitle(anime.getTitle(), anime.getUrl())
                         .setImage(anime.getImageUrl())
                         .setDescription(anime.getMalId() + "#" + titleEn)
@@ -130,6 +132,7 @@ public class AnimeController implements AnimeRepository {
                         .map(Genre::getName)
                         .collect(Collectors.joining(", "));
                 MessageEmbed embedBuilder = new EmbedBuilder()
+                        .setColor(new Color(247, 239, 198))
                         .setTitle(manga.getTitle(), manga.getUrl())
                         .setImage(manga.getImg())
                         .setDescription(manga.getMalId() + "#" + titleEn)
@@ -163,6 +166,7 @@ public class AnimeController implements AnimeRepository {
                         .limit(10)
                         .collect(Collectors.joining("\n"));
                 MessageEmbed embedBuilder = new EmbedBuilder()
+                        .setColor(new Color(247, 239, 198))
                         .setTitle("Top 10 Results")
                         .setDescription(result)
                         .build();
@@ -190,6 +194,7 @@ public class AnimeController implements AnimeRepository {
                         .limit(10)
                         .collect(Collectors.joining("\n"));
                 MessageEmbed embedBuilder = new EmbedBuilder()
+                        .setColor(new Color(247, 239, 198))
                         .setTitle("Top 10 Results")
                         .setDescription(result)
                         .build();
