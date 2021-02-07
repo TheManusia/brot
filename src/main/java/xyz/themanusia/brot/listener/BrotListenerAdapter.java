@@ -30,7 +30,7 @@ public class BrotListenerAdapter extends ListenerAdapter implements BrotListener
         String summon = "**summon** `user` - Summon user until the user exist\n" +
                 "**cancel** - Cancel Summoning";
 
-        String anime = "**anime** `id` - Show info by id (You can get anime id from MyAnimeList)\n" +
+        String anime = "**anime** `id` - Show anime info by id (You can get anime id from MyAnimeList)\n" +
                 "**anime** `-s` | `-search` `keyword` - Search anime\n" +
                 "**anime** `-pic` | `-picture` `url` | `picture` - Search anime with picture of anime scene";
 
