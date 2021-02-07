@@ -30,9 +30,12 @@ public class BrotListenerAdapter extends ListenerAdapter implements BrotListener
         String summon = "**summon** `user` - Summon user until the user exist\n" +
                 "**cancel** - Cancel Summoning";
 
-        String anime = "**anime** `id` - Show anime by id (You can get anime id from MyAnimeList)\n" +
+        String anime = "**anime** `id` - Show info by id (You can get anime id from MyAnimeList)\n" +
                 "**anime** `-s` | `-search` `keyword` - Search anime\n" +
                 "**anime** `-pic` | `-picture` `url` | `picture` - Search anime with picture of anime scene";
+
+        String manga = "**manga** `id` - Show manga info by id (You can get manga id from MyAnimeList)\n" +
+                "**manga** `-s` | `-search` `keyword` - Search manga";
 
         channel.sendMessage(new EmbedBuilder()
                 .setTitle("Brot Command List")
@@ -40,6 +43,7 @@ public class BrotListenerAdapter extends ListenerAdapter implements BrotListener
                 .setDescription("Prefix for this bot is &")
                 .addField("Summon Command", summon, false)
                 .addField("Anime Command", anime, false)
+                .addField("Manga Command", manga, false)
                 .build())
                 .queue();
     }
