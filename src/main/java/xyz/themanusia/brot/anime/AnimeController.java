@@ -19,7 +19,6 @@ import xyz.themanusia.brot.network.tracemoe.response.Sauce;
 
 import java.awt.*;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 public class AnimeController implements AnimeRepository {
@@ -51,11 +50,12 @@ public class AnimeController implements AnimeRepository {
             @SneakyThrows
             @Override
             public void onSuccess(Sauce sauce) {
-                String namefile = URLEncoder.encode(sauce.getFilename(), StandardCharsets.UTF_8).replaceAll("[+]", "%20");
-                String thumbnail = String.format("https://media.trace.moe/image/%d/%s?t=%.2f&token=%s",
+                String namefile = URLEncoder.encode(sauce.getFilename(), "UTF-8").replaceAll("[+]|(\\s)", "%20");
+                String at = (sauce.getAt() % 1 == 0) ? String.valueOf((int) sauce.getAt()) : String.format("%.2f", sauce.getAt());
+                String thumbnail = String.format("https://media.trace.moe/image/%d/%s?t=%s&token=%s",
                         sauce.getAniListId(),
                         namefile,
-                        sauce.getAt(),
+                        at,
                         sauce.getTokenthumb());
                 message.editMessage(new MessageBuilder()
                         .append("Sauce Found")
