@@ -1,5 +1,6 @@
 package xyz.themanusia.brot.anime;
 
+import lombok.SneakyThrows;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -17,6 +18,8 @@ import xyz.themanusia.brot.network.tracemoe.callback.TraceMoeCallback;
 import xyz.themanusia.brot.network.tracemoe.response.Sauce;
 
 import java.awt.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 public class AnimeController implements AnimeRepository {
@@ -45,17 +48,28 @@ public class AnimeController implements AnimeRepository {
     @Override
     public void searchAnimeWithPict(MessageChannel channel, String image) {
         searching(channel).queue(message -> traceMoeCore.getSauce(image, new TraceMoeCallback() {
+            @SneakyThrows
             @Override
             public void onSuccess(Sauce sauce) {
-                sendMessageAnime(sauce.getMalId(), message);
-                message.getChannel().sendMessage(new MessageBuilder()
-                        .append("Similarity: ")
-                        .append(String.valueOf((int) (sauce.getSimilarity() * 100)))
-                        .append("%\n")
-                        .append("From Episode ")
-                        .append(String.valueOf(sauce.getEpisode()))
-                        .build()
-                ).queue();
+                String namefile = URLEncoder.encode(sauce.getFilename(), StandardCharsets.UTF_8).replaceAll("[+]", "%20");
+                String thumbnail = String.format("https://media.trace.moe/image/%d/%s?t=%.2f&token=%s",
+                        sauce.getAniListId(),
+                        namefile,
+                        sauce.getAt(),
+                        sauce.getTokenthumb());
+                message.editMessage(new MessageBuilder()
+                        .append("Sauce Found")
+                        .setEmbed(new EmbedBuilder()
+                                .setTitle(sauce.getTitle())
+                                .setImage(thumbnail)
+                                .setColor(new Color(247, 239, 198))
+                                .addField("Similarity", String.valueOf((int) (sauce.getSimilarity() * 100)), true)
+                                .addField("Episode", String.valueOf(sauce.getEpisode()), true)
+                                .build())
+                        .build())
+                        .queue();
+                message.getChannel().sendMessage(":mag: Getting Info...")
+                        .queue(msg -> sendMessageAnime(sauce.getMalId(), msg));
             }
 
             @Override
