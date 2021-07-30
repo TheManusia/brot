@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import xyz.themanusia.brot.constant.DBColor;
 import xyz.themanusia.brot.constant.DBText;
 
-import java.awt.*;
-
 public class BrotListenerAdapter extends ListenerAdapter implements BrotListener {
 
     @Override
