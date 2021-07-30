@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class AnimeListener extends BrotListenerAdapter {
-    AnimeRepository repository = new AnimeController();
+    final AnimeRepository repository = new AnimeController();
 
     @SneakyThrows
     @Override

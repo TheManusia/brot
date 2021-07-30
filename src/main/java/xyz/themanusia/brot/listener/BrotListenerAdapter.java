@@ -37,7 +37,7 @@ public class BrotListenerAdapter extends ListenerAdapter implements BrotListener
         String manga = "**manga** `id` - Show manga info by id (You can get manga id from MyAnimeList)\n" +
                 "**manga** `-s` | `-search` `keyword` - Search manga";
 
-        channel.sendMessage(new EmbedBuilder()
+        channel.sendMessageEmbeds(new EmbedBuilder()
                 .setTitle("Brot Command List")
                 .setColor(new Color(247, 239, 198))
                 .setDescription("Prefix for this bot is &")

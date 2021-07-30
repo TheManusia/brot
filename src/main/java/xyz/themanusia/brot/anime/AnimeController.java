@@ -22,8 +22,8 @@ import java.net.URLEncoder;
 import java.util.stream.Collectors;
 
 public class AnimeController implements AnimeRepository {
-    JikanCore jikanCore;
-    TraceMoeCore traceMoeCore;
+    final JikanCore jikanCore;
+    final TraceMoeCore traceMoeCore;
 
     public AnimeController() {
         jikanCore = new JikanCore();
@@ -59,7 +59,7 @@ public class AnimeController implements AnimeRepository {
                         sauce.getTokenthumb());
                 message.editMessage(new MessageBuilder()
                         .append("Sauce Found")
-                        .setEmbed(new EmbedBuilder()
+                        .setEmbeds(new EmbedBuilder()
                                 .setTitle(sauce.getTitle())
                                 .setImage(thumbnail)
                                 .setColor(new Color(247, 239, 198))
@@ -121,7 +121,7 @@ public class AnimeController implements AnimeRepository {
                         .addField("Synopsis", synopsis, false)
                         .build();
                 message.editMessage(new MessageBuilder()
-                        .setEmbed(embedBuilder)
+                        .setEmbeds(embedBuilder)
                         .build())
                         .append("Anime Found")
                         .queue();
@@ -158,7 +158,7 @@ public class AnimeController implements AnimeRepository {
                         .addField("Synopsis", synopsis, false)
                         .build();
                 message.editMessage(new MessageBuilder()
-                        .setEmbed(embedBuilder)
+                        .setEmbeds(embedBuilder)
                         .build())
                         .append("Manga Found")
                         .queue();
@@ -186,7 +186,7 @@ public class AnimeController implements AnimeRepository {
                         .build();
                 message.editMessage(
                         new MessageBuilder()
-                                .setEmbed(embedBuilder)
+                                .setEmbeds(embedBuilder)
                                 .append("Animes Found")
                                 .build())
                         .queue();
@@ -214,7 +214,7 @@ public class AnimeController implements AnimeRepository {
                         .build();
                 message.editMessage(
                         new MessageBuilder()
-                                .setEmbed(embedBuilder)
+                                .setEmbeds(embedBuilder)
                                 .append("Mangas Found")
                                 .build())
                         .queue();

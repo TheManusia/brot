@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class SummonController implements SummonRepository {
-    ArrayList<SummonEntity> arrayList = new ArrayList<>();
+    final ArrayList<SummonEntity> arrayList = new ArrayList<>();
 
     private static final int DELAY = 3;
     private static final TimeUnit TIME = TimeUnit.SECONDS;
@@ -30,7 +30,7 @@ public class SummonController implements SummonRepository {
     public void onStartSummon(SummonEntity se, MessageReceivedEvent event) {
         MessageChannel chnl = event.getChannel();
         Message summoning = new MessageBuilder()
-                .setEmbed(new EmbedBuilder()
+                .setEmbeds(new EmbedBuilder()
                         .setColor(new Color(247, 239, 198))
                         .setTitle("Kuchiyose no Jutsu!")
                         .setImage(START)
@@ -64,7 +64,7 @@ public class SummonController implements SummonRepository {
                     }
                 } else {
                     doneSummon(new MessageBuilder()
-                            .setEmbed(new EmbedBuilder()
+                            .setEmbeds(new EmbedBuilder()
                                     .setColor(new Color(247, 239, 198))
                                     .setImage(FAILED)
                                     .setTitle("User can't be summoned")
@@ -80,7 +80,7 @@ public class SummonController implements SummonRepository {
     @Override
     public void onCancelSummon(Guild guild, MessageChannel channel) {
         doneSummon(new MessageBuilder()
-                .setEmbed(new EmbedBuilder()
+                .setEmbeds(new EmbedBuilder()
                         .setColor(new Color(247, 239, 198))
                         .setTitle("Summoning has been canceled")
                         .setImage(CANCEL)
@@ -91,7 +91,7 @@ public class SummonController implements SummonRepository {
     @Override
     public void onSummoned(Guild guild, MessageChannel channel) {
         doneSummon(new MessageBuilder()
-                .setEmbed(new EmbedBuilder()
+                .setEmbeds(new EmbedBuilder()
                         .setColor(new Color(247, 239, 198))
                         .setImage(SUCCESS)
                         .setTitle("User has been summoned")
