@@ -18,7 +18,6 @@ import xyz.themanusia.brot.network.tracemoe.callback.TraceMoeCallback;
 import xyz.themanusia.brot.network.tracemoe.response.Sauce;
 
 import java.awt.*;
-import java.net.URLEncoder;
 import java.util.stream.Collectors;
 
 public class AnimeController implements AnimeRepository {
@@ -50,26 +49,17 @@ public class AnimeController implements AnimeRepository {
             @SneakyThrows
             @Override
             public void onSuccess(Sauce sauce) {
-                String namefile = URLEncoder.encode(sauce.getFilename(), "UTF-8").replaceAll("[+]|(\\s)", "%20");
-                String at = (sauce.getAt() % 1 == 0) ? String.valueOf((int) sauce.getAt()) : String.format("%.2f", sauce.getAt());
-                String thumbnail = String.format("https://media.trace.moe/image/%d/%s?t=%s&token=%s",
-                        sauce.getAniListId(),
-                        namefile,
-                        at,
-                        sauce.getTokenthumb());
                 message.editMessage(new MessageBuilder()
-                        .append("Sauce Found")
-                        .setEmbeds(new EmbedBuilder()
-                                .setTitle(sauce.getTitle())
-                                .setImage(thumbnail)
-                                .setColor(new Color(247, 239, 198))
-                                .addField("Similarity", String.valueOf((int) (sauce.getSimilarity() * 100)), true)
-                                .addField("Episode", String.valueOf(sauce.getEpisode()), true)
+                                .append("Sauce Found")
+                                .setEmbeds(new EmbedBuilder()
+                                        .setTitle(sauce.getFilename())
+                                        .setImage(sauce.getImageUrl())
+                                        .setColor(new Color(247, 239, 198))
+                                        .addField("Similarity", String.valueOf((int) (sauce.getSimilarity() * 100)), true)
+                                        .addField("Episode", String.valueOf(sauce.getEpisode()), true)
+                                        .build())
                                 .build())
-                        .build())
                         .queue();
-                message.getChannel().sendMessage(":mag: Getting Info...")
-                        .queue(msg -> sendMessageAnime(sauce.getMalId(), msg));
             }
 
             @Override
@@ -121,8 +111,8 @@ public class AnimeController implements AnimeRepository {
                         .addField("Synopsis", synopsis, false)
                         .build();
                 message.editMessage(new MessageBuilder()
-                        .setEmbeds(embedBuilder)
-                        .build())
+                                .setEmbeds(embedBuilder)
+                                .build())
                         .append("Anime Found")
                         .queue();
             }
@@ -158,8 +148,8 @@ public class AnimeController implements AnimeRepository {
                         .addField("Synopsis", synopsis, false)
                         .build();
                 message.editMessage(new MessageBuilder()
-                        .setEmbeds(embedBuilder)
-                        .build())
+                                .setEmbeds(embedBuilder)
+                                .build())
                         .append("Manga Found")
                         .queue();
             }
@@ -185,10 +175,10 @@ public class AnimeController implements AnimeRepository {
                         .setDescription(result)
                         .build();
                 message.editMessage(
-                        new MessageBuilder()
-                                .setEmbeds(embedBuilder)
-                                .append("Animes Found")
-                                .build())
+                                new MessageBuilder()
+                                        .setEmbeds(embedBuilder)
+                                        .append("Animes Found")
+                                        .build())
                         .queue();
             }
 
@@ -213,10 +203,10 @@ public class AnimeController implements AnimeRepository {
                         .setDescription(result)
                         .build();
                 message.editMessage(
-                        new MessageBuilder()
-                                .setEmbeds(embedBuilder)
-                                .append("Mangas Found")
-                                .build())
+                                new MessageBuilder()
+                                        .setEmbeds(embedBuilder)
+                                        .append("Mangas Found")
+                                        .build())
                         .queue();
             }
 

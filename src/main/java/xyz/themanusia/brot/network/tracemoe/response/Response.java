@@ -14,6 +14,6 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class Response {
 
-    @SerializedName("docs")
+    @SerializedName("result")
     private ArrayList<Sauce> sauces;
 }

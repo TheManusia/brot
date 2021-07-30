@@ -5,7 +5,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitTraceMoeService {
-    private static final String URL = "https://trace.moe/api/";
+    private static final String URL = "https://api.trace.moe/";
 
     public TraceMoeService getService() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
