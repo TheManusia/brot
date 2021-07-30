@@ -24,6 +24,8 @@ public class AnimeController implements AnimeRepository {
     final JikanCore jikanCore;
     final TraceMoeCore traceMoeCore;
 
+    private final static String ANILIST_URL = "https://anilist.co/anime/";
+
     public AnimeController() {
         jikanCore = new JikanCore();
         traceMoeCore = new TraceMoeCore();
@@ -52,7 +54,7 @@ public class AnimeController implements AnimeRepository {
                 message.editMessage(new MessageBuilder()
                                 .append("Sauce Found")
                                 .setEmbeds(new EmbedBuilder()
-                                        .setTitle(sauce.getFilename())
+                                        .setTitle(sauce.getAnilist().getTitle().getRomajiTitle(), (ANILIST_URL+sauce.getAnilist().getId()))
                                         .setImage(sauce.getImageUrl())
                                         .setColor(new Color(247, 239, 198))
                                         .addField("Similarity", String.valueOf((int) (sauce.getSimilarity() * 100)), true)

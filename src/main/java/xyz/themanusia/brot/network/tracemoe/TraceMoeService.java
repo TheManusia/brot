@@ -7,6 +7,6 @@ import xyz.themanusia.brot.network.tracemoe.response.Response;
 
 public interface TraceMoeService {
 
-    @GET("search")
+    @GET("search?anilistInfo")
     Call<Response> getSauce(@Query("url") String image);
 }

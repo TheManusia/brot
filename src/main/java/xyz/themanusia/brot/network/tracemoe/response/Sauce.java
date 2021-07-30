@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class Sauce {
 
     @SerializedName("anilist")
-    private String aniListId;
+    private Anilist anilist;
 
     @SerializedName("filename")
     private String filename;
@@ -39,12 +39,5 @@ public class Sauce {
         }
 
         return Double.parseDouble(similarity);
-    }
-
-    public int getAniListId() {
-        if (aniListId == null || aniListId.equals("")) {
-            return 0;
-        }
-        return Integer.parseInt(aniListId);
     }
 }
