@@ -20,6 +20,12 @@ public class TraceMoeCore {
         traceMoeService = retrofitTraceMoeService.getService();
     }
 
+    /**
+     * Get image scene sauce from TraceMoe API
+     *
+     * @param image Image URL
+     * @param callback TraceMoeCallback
+     */
     public void getSauce(String image, TraceMoeCallback callback) {
         traceMoeService.getSauce(image).enqueue(new Callback<Response>() {
             @Override

@@ -21,6 +21,12 @@ public class JikanCore {
         service = retrofitJikanService.getService();
     }
 
+    /**
+     * Get anime informtion by id from MyAnimelist
+     *
+     * @param id MyAnimelist id
+     * @param callback JikanAnimeCallback
+     */
     public void getAnimeById(int id, JikanAnimeCallback callback) {
         Call<Anime> client = service.getAnimeById(id);
         client.enqueue(new Callback<Anime>() {
@@ -43,6 +49,13 @@ public class JikanCore {
             }
         });
     }
+
+    /**
+     * Search anime on MyAnimelist
+     *
+     * @param keyword anime title keyword
+     * @param callback JikanAnimeSearchCallback
+     */
 
     public void searchAnime(String keyword, JikanAnimeSearchCallback callback) {
         service.getAnimes(keyword).enqueue(new Callback<AnimeSearch>() {
@@ -70,6 +83,12 @@ public class JikanCore {
         });
     }
 
+    /**
+     * Get manga by id from MyAnimeList
+     *
+     * @param id Manga id
+     * @param callback JikanMangaCallback
+     */
     public void getMangaById(int id, JikanMangaCallback callback) {
         service.getMangaById(id).enqueue(new Callback<Manga>() {
             @Override
@@ -92,6 +111,12 @@ public class JikanCore {
         });
     }
 
+    /**
+     * Search manga on MyAnimelist
+     *
+     * @param keyword manga title keyword
+     * @param callback JikanMangaSearchCallback
+     */
     public void searchManga(String keyword, JikanMangaSearchCallback callback) {
         service.getMangas(keyword).enqueue(new Callback<MangaSearch>() {
             @Override
