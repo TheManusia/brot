@@ -17,6 +17,6 @@ public class Helper {
     }
 
     public static String percentage(double v) {
-        return toString(v * 100);
+        return toString((int) (v * 100));
     }
 }

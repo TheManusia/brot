@@ -54,7 +54,7 @@ public class AnimeController implements AnimeRepository {
                 message.editMessage(new MessageBuilder()
                                 .append(DBText.SAUCE_FOUND)
                                 .setEmbeds(new EmbedBuilder()
-                                        .setTitle(sauce.getAnilist().getTitle().getRomajiTitle(), DBText.ANILIST_ANIME(sauce.getAnilist().getId()))
+                                        .setTitle(sauce.getAnilist().getTitle().getRomajiTitle(), DBText.ANILIST_ANIME(sauce.getAnilist().getIdMal()))
                                         .setImage(sauce.getImageUrl())
                                         .setColor(DBColor.EMBED_COLOR)
                                         .addField(DBText.SIMILARITY, Helper.percentage(sauce.getSimilarity()), true)
@@ -62,6 +62,9 @@ public class AnimeController implements AnimeRepository {
                                         .build())
                                 .build())
                         .queue();
+
+                message.getChannel().sendMessage(DBText.GETTING_INFO)
+                        .queue(msg -> sendMessageAnime(sauce.getAnilist().getIdMal(), msg));
             }
 
             @Override

@@ -1,9 +1,7 @@
 package xyz.themanusia.brot.constant;
 
-import java.awt.*;
-
 public class DBText {
-    public final static String ANILIST_URL = "https://anilist.co/";
+    public final static String MAL_URL = "https://myanimelist.net";
 
     public final static String USER_SUMMONED = "User has been summoned";
     public final static String HAVE_A_NICE_DAY = "Have a nice day!";
@@ -54,6 +52,7 @@ public class DBText {
 
     public final static String STAR_EMOJI = ":star:";
     public final static String SEARCHING = ":mag: Searching...";
+    public final static String GETTING_INFO = ":mag: Getting Info...";
 
     public final static String NO_SYNOPSIS = "No Synopsis";
 
@@ -64,10 +63,10 @@ public class DBText {
     }
 
     public static String LIST_ITEM(int id, String name) {
-        return String.format("%s %s", id, name);
+        return String.format("%s#%s", id, name);
     }
 
     public static String ANILIST_ANIME(int id) {
-        return ANILIST_URL + id;
+        return String.format("%s/anime/%d", MAL_URL, id);
     }
 }
