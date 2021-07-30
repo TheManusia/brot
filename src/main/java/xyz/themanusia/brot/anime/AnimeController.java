@@ -7,6 +7,9 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
+import xyz.themanusia.brot.constant.DBColor;
+import xyz.themanusia.brot.constant.DBText;
+import xyz.themanusia.brot.helper.Helper;
 import xyz.themanusia.brot.network.jikan.JikanCore;
 import xyz.themanusia.brot.network.jikan.callback.JikanAnimeCallback;
 import xyz.themanusia.brot.network.jikan.callback.JikanAnimeSearchCallback;
@@ -17,14 +20,11 @@ import xyz.themanusia.brot.network.tracemoe.TraceMoeCore;
 import xyz.themanusia.brot.network.tracemoe.callback.TraceMoeCallback;
 import xyz.themanusia.brot.network.tracemoe.response.Sauce;
 
-import java.awt.*;
 import java.util.stream.Collectors;
 
 public class AnimeController implements AnimeRepository {
     final JikanCore jikanCore;
     final TraceMoeCore traceMoeCore;
-
-    private final static String ANILIST_URL = "https://anilist.co/anime/";
 
     public AnimeController() {
         jikanCore = new JikanCore();
@@ -52,13 +52,13 @@ public class AnimeController implements AnimeRepository {
             @Override
             public void onSuccess(Sauce sauce) {
                 message.editMessage(new MessageBuilder()
-                                .append("Sauce Found")
+                                .append(DBText.SAUCE_FOUND)
                                 .setEmbeds(new EmbedBuilder()
-                                        .setTitle(sauce.getAnilist().getTitle().getRomajiTitle(), (ANILIST_URL+sauce.getAnilist().getId()))
+                                        .setTitle(sauce.getAnilist().getTitle().getRomajiTitle(), DBText.ANILIST_ANIME(sauce.getAnilist().getId()))
                                         .setImage(sauce.getImageUrl())
-                                        .setColor(new Color(247, 239, 198))
-                                        .addField("Similarity", String.valueOf((int) (sauce.getSimilarity() * 100)), true)
-                                        .addField("Episode", String.valueOf(sauce.getEpisode()), true)
+                                        .setColor(DBColor.EMBED_COLOR)
+                                        .addField(DBText.SIMILARITY, Helper.percentage(sauce.getSimilarity()), true)
+                                        .addField(DBText.EPISODE, String.valueOf(sauce.getEpisode()), true)
                                         .build())
                                 .build())
                         .queue();
@@ -86,36 +86,35 @@ public class AnimeController implements AnimeRepository {
     }
 
     private MessageAction searching(MessageChannel channel) {
-        return channel.sendMessage(":mag: Searching...");
+        return channel.sendMessage(DBText.SEARCHING);
     }
 
     private void sendMessageAnime(int id, Message message) {
         jikanCore.getAnimeById(id, new JikanAnimeCallback() {
             @Override
             public void onGetAnimeSuccess(Anime anime) {
-                String synopsis = (anime.getSynopsis() == null) ? "No Synopsis" :
-                        (anime.getSynopsis().length() > 415) ?
-                                anime.getSynopsis().substring(0, 415) + "..." : anime.getSynopsis();
-                String titleEn = (anime.getTitleEnglish() == null) ? anime.getTitle() : anime.getTitleEnglish();
+                String synopsis = Helper.isNull(anime.getSynopsis()) ? DBText.NO_SYNOPSIS :
+                        Helper.stringMinimize(anime.getSynopsis());
+                String titleEn = Helper.isNull(anime.getTitleEnglish()) ? anime.getTitle() : anime.getTitleEnglish();
                 String genres = anime.getGenres().stream()
                         .map(Genre::getName)
                         .collect(Collectors.joining(", "));
                 MessageEmbed embedBuilder = new EmbedBuilder()
-                        .setColor(new Color(247, 239, 198))
+                        .setColor(DBColor.EMBED_COLOR)
                         .setTitle(anime.getTitle(), anime.getUrl())
                         .setImage(anime.getImageUrl())
-                        .setDescription(anime.getMalId() + "#" + titleEn)
-                        .addField("Score", ":star: " + anime.getScore(), true)
-                        .addField("Status", anime.getStatus(), true)
-                        .addField("Episodes", "" + anime.getEpisodes(), true)
-                        .addField("Genres", genres, true)
-                        .addField("Rating", anime.getRating(), true)
-                        .addField("Synopsis", synopsis, false)
+                        .setDescription(DBText.LIST_ITEM(anime.getMalId(), titleEn))
+                        .addField(DBText.SCORE, DBText.STAR_EMOJI + anime.getScore(), true)
+                        .addField(DBText.STATUS, anime.getStatus(), true)
+                        .addField(DBText.EPISODES, Helper.toString(anime.getEpisodes()), true)
+                        .addField(DBText.GENRES, genres, true)
+                        .addField(DBText.RATING, anime.getRating(), true)
+                        .addField(DBText.SYNOPSIS, synopsis, false)
                         .build();
                 message.editMessage(new MessageBuilder()
                                 .setEmbeds(embedBuilder)
                                 .build())
-                        .append("Anime Found")
+                        .append(DBText.ANIME_FOUND)
                         .queue();
             }
 
@@ -130,29 +129,28 @@ public class AnimeController implements AnimeRepository {
         jikanCore.getMangaById(id, new JikanMangaCallback() {
             @Override
             public void onGetMangaSuccess(Manga manga) {
-                String synopsis = (manga.getSynopsis() == null) ? "No Synopsis" :
-                        (manga.getSynopsis().length() > 415) ?
-                                manga.getSynopsis().substring(0, 415) + "..." : manga.getSynopsis();
-                String titleEn = (manga.getTitleEn() == null) ? manga.getTitle() : manga.getTitleEn();
+                String synopsis = Helper.isNull(manga.getSynopsis()) ? DBText.NO_SYNOPSIS :
+                        Helper.stringMinimize(manga.getSynopsis());
+                String titleEn = Helper.isNull(manga.getTitleEn()) ? manga.getTitle() : manga.getTitleEn();
                 String genres = manga.getGenres().stream()
                         .map(Genre::getName)
                         .collect(Collectors.joining(", "));
                 MessageEmbed embedBuilder = new EmbedBuilder()
-                        .setColor(new Color(247, 239, 198))
+                        .setColor(DBColor.EMBED_COLOR)
                         .setTitle(manga.getTitle(), manga.getUrl())
                         .setImage(manga.getImg())
-                        .setDescription(manga.getMalId() + "#" + titleEn)
-                        .addField("Score", ":star: " + manga.getScore(), true)
-                        .addField("Status", manga.getStatus(), true)
-                        .addField("Volume", "" + manga.getVolumes(), true)
-                        .addField("Genres", genres, true)
-                        .addField("Chapter", "" + manga.getChapters(), true)
-                        .addField("Synopsis", synopsis, false)
+                        .setDescription(DBText.LIST_ITEM(manga.getMalId(), titleEn))
+                        .addField(DBText.SCORE, DBText.STAR_EMOJI + manga.getScore(), true)
+                        .addField(DBText.STATUS, manga.getStatus(), true)
+                        .addField(DBText.VOLUMES, Helper.toString(manga.getVolumes()), true)
+                        .addField(DBText.GENRES, genres, true)
+                        .addField(DBText.CHAPTERS, Helper.toString(manga.getChapters()), true)
+                        .addField(DBText.SYNOPSIS, synopsis, false)
                         .build();
                 message.editMessage(new MessageBuilder()
                                 .setEmbeds(embedBuilder)
                                 .build())
-                        .append("Manga Found")
+                        .append(DBText.MANGA_FOUND)
                         .queue();
             }
 
@@ -168,18 +166,18 @@ public class AnimeController implements AnimeRepository {
             @Override
             public void onGetAnimesSuccess(AnimeSearch results) {
                 String result = results.getResults().stream()
-                        .map(anime -> anime.getMalId() + "#" + anime.getTitle())
+                        .map(anime -> DBText.LIST_ITEM(anime.getMalId(), anime.getTitle()))
                         .limit(10)
                         .collect(Collectors.joining("\n"));
                 MessageEmbed embedBuilder = new EmbedBuilder()
-                        .setColor(new Color(247, 239, 198))
-                        .setTitle("Top 10 Results")
+                        .setColor(DBColor.EMBED_COLOR)
+                        .setTitle(DBText.TOP_10)
                         .setDescription(result)
                         .build();
                 message.editMessage(
                                 new MessageBuilder()
                                         .setEmbeds(embedBuilder)
-                                        .append("Animes Found")
+                                        .append(DBText.ANIME_FOUND)
                                         .build())
                         .queue();
             }
@@ -196,18 +194,18 @@ public class AnimeController implements AnimeRepository {
             @Override
             public void onGetMangasSuccess(MangaSearch results) {
                 String result = results.getResults().stream()
-                        .map(manga -> manga.getMalId() + "#" + manga.getTitle())
+                        .map(manga -> DBText.LIST_ITEM(manga.getMalId(), manga.getTitle()))
                         .limit(10)
                         .collect(Collectors.joining("\n"));
                 MessageEmbed embedBuilder = new EmbedBuilder()
-                        .setColor(new Color(247, 239, 198))
-                        .setTitle("Top 10 Results")
+                        .setColor(DBColor.EMBED_COLOR)
+                        .setTitle(DBText.TOP_10)
                         .setDescription(result)
                         .build();
                 message.editMessage(
                                 new MessageBuilder()
                                         .setEmbeds(embedBuilder)
-                                        .append("Mangas Found")
+                                        .append(DBText.MANGA_FOUND)
                                         .build())
                         .queue();
             }

@@ -3,6 +3,7 @@ package xyz.themanusia.brot.anime;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import xyz.themanusia.brot.constant.DBText;
 import xyz.themanusia.brot.listener.BrotListenerAdapter;
 
 import java.util.Arrays;
@@ -30,11 +31,11 @@ public class AnimeListener extends BrotListenerAdapter {
                     } else if (msg.length > 2) {
                         repository.searchAnimeWithPict(event.getChannel(), msg[2]);
                     } else {
-                        event.getChannel().sendMessage("Insert Picture!").queue();
+                        event.getChannel().sendMessage(DBText.INSERT_PICTURE).queue();
                     }
                 }
             } else {
-                event.getChannel().sendMessage("Insert Parameter!").queue();
+                event.getChannel().sendMessage(DBText.INSERT_PARAMETER).queue();
             }
         } else if (msg[0].contains("&manga")) {
             if (msg.length > 1) {
@@ -47,7 +48,7 @@ public class AnimeListener extends BrotListenerAdapter {
                     repository.searchManga(event.getChannel(), keyword);
                 }
             } else {
-                event.getChannel().sendMessage("Insert Parameter!").queue();
+                event.getChannel().sendMessage(DBText.INSERT_PARAMETER).queue();
             }
         }
     }

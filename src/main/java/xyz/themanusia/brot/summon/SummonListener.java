@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import xyz.themanusia.brot.constant.DBText;
 import xyz.themanusia.brot.listener.BrotListenerAdapter;
 
 public class SummonListener extends BrotListenerAdapter {
@@ -18,13 +19,13 @@ public class SummonListener extends BrotListenerAdapter {
         if (cmd[0].contains("&summon")) {
             if (summonRepository.isEmpty(event.getGuild())) {
                 if (msg.getMentionedMembers().isEmpty()) {
-                    chnl.sendMessage("Mention User!").queue();
+                    chnl.sendMessage(DBText.MENTION_USER).queue();
                 } else {
                     if (msg.getMentionedMembers().get(0).getUser().isBot()) {
-                        chnl.sendMessage("Can't summon bot!").queue();
+                        chnl.sendMessage(DBText.BOT_WARNING).queue();
                     } else {
                         if (msg.getMentionedMembers().get(0).getUser() == msg.getAuthor()) {
-                            chnl.sendMessage("You can't summon yourself").queue();
+                            chnl.sendMessage(DBText.SUMMON_SELF).queue();
                         } else {
                             summonRepository.onStartSummon(new SummonEntity(
                                     event.getGuild().getId(),
@@ -35,7 +36,7 @@ public class SummonListener extends BrotListenerAdapter {
                     }
                 }
             } else {
-                chnl.sendMessage("Wait until user is summoned").queue();
+                chnl.sendMessage(DBText.SUMMON_WAIT).queue();
             }
         } else if (cmd[0].contains("&cancel")) {
             summonRepository.onCancelSummon(event.getGuild(), event.getChannel());

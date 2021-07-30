@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import xyz.themanusia.brot.constant.DBColor;
+import xyz.themanusia.brot.constant.DBText;
 
 import java.awt.*;
 
@@ -27,23 +29,14 @@ public class BrotListenerAdapter extends ListenerAdapter implements BrotListener
     }
 
     private void showHelp(MessageChannel channel) {
-        String summon = "**summon** `user` - Summon user until the user exist\n" +
-                "**cancel** - Cancel Summoning";
-
-        String anime = "**anime** `id` - Show anime info by id (You can get anime id from MyAnimeList)\n" +
-                "**anime** `-s` | `-search` `keyword` - Search anime\n" +
-                "**anime** `-pic` | `-picture` `url` | `picture` - Search anime with picture of anime scene";
-
-        String manga = "**manga** `id` - Show manga info by id (You can get manga id from MyAnimeList)\n" +
-                "**manga** `-s` | `-search` `keyword` - Search manga";
 
         channel.sendMessageEmbeds(new EmbedBuilder()
-                .setTitle("Brot Command List")
-                .setColor(new Color(247, 239, 198))
-                .setDescription("Prefix for this bot is &")
-                .addField("Summon Command", summon, false)
-                .addField("Anime Command", anime, false)
-                .addField("Manga Command", manga, false)
+                .setTitle(DBText.HELP_TITLE)
+                .setColor(DBColor.EMBED_COLOR)
+                .setDescription(DBText.BOT_PREFIX)
+                .addField(DBText.SUMMON_TITLE, DBText.SUMMON_COMMAND, false)
+                .addField(DBText.ANIME_TITLE, DBText.ANIME_COMMAND, false)
+                .addField(DBText.MANGA_TITLE, DBText.MANGA_COMMAND, false)
                 .build())
                 .queue();
     }
