@@ -16,31 +16,38 @@ public class SummonListener extends BrotListenerAdapter {
         MessageChannel chnl = event.getChannel();
         String[] cmd = msg.getContentDisplay().split(" ");
 
-        if (cmd[0].contains("&summon")) {
-            if (summonRepository.isEmpty(event.getGuild())) {
-                if (msg.getMentionedMembers().isEmpty()) {
-                    chnl.sendMessage(DBText.MENTION_USER).queue();
-                } else {
-                    if (msg.getMentionedMembers().get(0).getUser().isBot()) {
-                        chnl.sendMessage(DBText.BOT_WARNING).queue();
+        switch (cmd[0]) {
+            case "&summon":
+                if (summonRepository.isEmpty(event.getGuild())) {
+                    if (msg.getMentionedMembers().isEmpty()) {
+                        chnl.sendMessage(DBText.MENTION_USER).queue();
                     } else {
-                        if (msg.getMentionedMembers().get(0).getUser() == msg.getAuthor()) {
-                            chnl.sendMessage(DBText.SUMMON_SELF).queue();
+                        if (msg.getMentionedMembers().get(0).getUser().isBot()) {
+                            chnl.sendMessage(DBText.BOT_WARNING).queue();
                         } else {
-                            summonRepository.onStartSummon(new SummonEntity(
-                                    event.getGuild().getId(),
-                                    msg.getAuthor(),
-                                    msg.getMentionedMembers().get(0).getUser(),
-                                    false), event);
+                            if (msg.getMentionedMembers().get(0).getUser() == msg.getAuthor()) {
+                                chnl.sendMessage(DBText.SUMMON_SELF).queue();
+                            } else {
+                                summonRepository.onStartSummon(new SummonEntity(
+                                        event.getGuild().getId(),
+                                        msg.getAuthor(),
+                                        msg.getMentionedMembers().get(0).getUser(),
+                                        false), event);
+                            }
                         }
                     }
+                } else {
+                    chnl.sendMessage(DBText.SUMMON_WAIT).queue();
                 }
-            } else {
-                chnl.sendMessage(DBText.SUMMON_WAIT).queue();
-            }
-        } else if (cmd[0].contains("&cancel")) {
-            summonRepository.onCancelSummon(event.getGuild(), event.getChannel());
-        } else if (summonRepository.isSummon(event.getAuthor(), event.getGuild())) {
+                break;
+            case "&cancel":
+                summonRepository.onCancelSummon(event.getGuild(), event.getChannel());
+                break;
+            default:
+                break;
+        }
+
+        if (summonRepository.isSummon(event.getAuthor(), event.getGuild())) {
             summonRepository.onSummoned(event.getGuild(), event.getChannel());
         }
     }

@@ -16,40 +16,44 @@ public class AnimeListener extends BrotListenerAdapter {
     @Override
     public void onMessageChecked(@NotNull MessageReceivedEvent event) {
         String[] msg = event.getMessage().getContentDisplay().split(" ");
-        if (msg[0].contains("&anime")) {
-            if (msg.length > 1) {
-                if (msg[1].matches("[0-9]*")) {
-                    repository.getAnimeById(event.getChannel(), Integer.parseInt(msg[1]));
-                } else if (msg[1].equalsIgnoreCase("-search") || msg[1].equalsIgnoreCase("-s")) {
-                    String keyword = Arrays.stream(msg)
-                            .filter(s -> !s.matches("(&anime)|(-search)|(-s)"))
-                            .collect(Collectors.joining(" ")).trim();
-                    repository.searchAnime(event.getChannel(), keyword);
-                } else if (msg[1].equalsIgnoreCase("-pic") || msg[1].equalsIgnoreCase("-picture")) {
-                    if (!event.getMessage().getAttachments().isEmpty()) {
-                        repository.searchAnimeWithPict(event.getChannel(), event.getMessage().getAttachments().get(0).getUrl());
-                    } else if (msg.length > 2) {
-                        repository.searchAnimeWithPict(event.getChannel(), msg[2]);
-                    } else {
-                        event.getChannel().sendMessage(DBText.INSERT_PICTURE).queue();
+
+        switch (msg[0]) {
+            case "&anime":
+                if (msg.length > 1) {
+                    if (msg[1].matches("[0-9]*")) {
+                        repository.getAnimeById(event.getChannel(), Integer.parseInt(msg[1]));
+                    } else if (msg[1].equalsIgnoreCase("-search") || msg[1].equalsIgnoreCase("-s")) {
+                        String keyword = Arrays.stream(msg)
+                                .filter(s -> !s.matches("(&anime)|(-search)|(-s)"))
+                                .collect(Collectors.joining(" ")).trim();
+                        repository.searchAnime(event.getChannel(), keyword);
+                    } else if (msg[1].equalsIgnoreCase("-pic") || msg[1].equalsIgnoreCase("-picture")) {
+                        if (!event.getMessage().getAttachments().isEmpty()) {
+                            repository.searchAnimeWithPict(event.getChannel(), event.getMessage().getAttachments().get(0).getUrl());
+                        } else if (msg.length > 2) {
+                            repository.searchAnimeWithPict(event.getChannel(), msg[2]);
+                        } else {
+                            event.getChannel().sendMessage(DBText.INSERT_PICTURE).queue();
+                        }
                     }
+                } else {
+                    event.getChannel().sendMessage(DBText.INSERT_PARAMETER).queue();
                 }
-            } else {
-                event.getChannel().sendMessage(DBText.INSERT_PARAMETER).queue();
-            }
-        } else if (msg[0].contains("&manga")) {
-            if (msg.length > 1) {
-                if (msg[1].matches("[0-9]*")) {
-                    repository.getMangaById(event.getChannel(), Integer.parseInt(msg[1]));
-                } else if (msg[1].equalsIgnoreCase("-search") || msg[1].equalsIgnoreCase("-s")) {
-                    String keyword = Arrays.stream(msg)
-                            .filter(s -> !s.matches("(&anime)|(-search)|(-s)"))
-                            .collect(Collectors.joining(" ")).trim();
-                    repository.searchManga(event.getChannel(), keyword);
+                break;
+            case "&manga":
+                if (msg.length > 1) {
+                    if (msg[1].matches("[0-9]*")) {
+                        repository.getMangaById(event.getChannel(), Integer.parseInt(msg[1]));
+                    } else if (msg[1].equalsIgnoreCase("-search") || msg[1].equalsIgnoreCase("-s")) {
+                        String keyword = Arrays.stream(msg)
+                                .filter(s -> !s.matches("(&anime)|(-search)|(-s)"))
+                                .collect(Collectors.joining(" ")).trim();
+                        repository.searchManga(event.getChannel(), keyword);
+                    }
+                } else {
+                    event.getChannel().sendMessage(DBText.INSERT_PARAMETER).queue();
                 }
-            } else {
-                event.getChannel().sendMessage(DBText.INSERT_PARAMETER).queue();
-            }
+                break;
         }
     }
 }
