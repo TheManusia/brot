@@ -1,7 +1,11 @@
 package xyz.themanusia.brot.constant;
 
+import java.util.concurrent.TimeUnit;
+
 public class DBText {
     public final static String MAL_URL = "https://myanimelist.net";
+
+    public final static String DEFAULT_PREFIX = "&";
 
     public final static String USER_SUMMONED = "User has been summoned";
     public final static String HAVE_A_NICE_DAY = "Have a nice day!";
@@ -57,6 +61,7 @@ public class DBText {
     public final static String NO_SYNOPSIS = "No Synopsis";
 
     public static final int DELAY = 3;
+    public static final TimeUnit TIME = TimeUnit.SECONDS;
 
     public static String SUMMONING_DM(String user, String guild) {
         return String.format("You are being summoned by %s at %s", user, guild);

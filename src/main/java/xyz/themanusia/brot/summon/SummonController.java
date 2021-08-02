@@ -22,8 +22,6 @@ import static xyz.themanusia.brot.constant.DBText.DELAY;
 public class SummonController implements SummonRepository {
     final ArrayList<SummonEntity> arrayList = new ArrayList<>();
 
-    private static final TimeUnit TIME = TimeUnit.SECONDS;
-
     @Override
     public void onStartSummon(SummonEntity se, MessageReceivedEvent event) {
         MessageChannel chnl = event.getChannel();
@@ -36,7 +34,7 @@ public class SummonController implements SummonRepository {
                 .build();
         arrayList.add(se);
         chnl.sendMessage(summoning).queue(message -> {
-            message.delete().queueAfter(DBText.DELAY, TIME);
+            message.delete().queueAfter(DBText.DELAY, DBText.TIME);
             summoning(message, se, 0);
         });
     }
@@ -47,15 +45,15 @@ public class SummonController implements SummonRepository {
         try {
             if (summonEntity != null) {
                 if (a < 10) {
-                    TIME.sleep(DELAY);
+                    DBText.TIME.sleep(DELAY);
                     if (!summonEntity.isSummoned()) {
                         chnl.sendMessage(new MessageBuilder()
                                         .append(summonEntity.getSummon()).build())
-                                .queue(s -> s.delete().queueAfter(DELAY, TIME));
+                                .queue(s -> s.delete().queueAfter(DELAY, DBText.TIME));
                         summonEntity.getSummon().openPrivateChannel().queue(c ->
                                 c.sendMessage(DBText.SUMMONING_DM(summonEntity.getSummoner().getAsTag(),
                                                 message.getGuild().getName()))
-                                        .queue(s -> s.delete().queueAfter(DELAY, TIME)));
+                                        .queue(s -> s.delete().queueAfter(DELAY, DBText.TIME)));
                         a++;
                     }
                 } else {
