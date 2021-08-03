@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 public class DBText {
     public final static String MAL_URL = "https://myanimelist.net";
 
-    public final static String DEFAULT_PREFIX = "&";
+    public final static String DEFAULT_PREFIX = "!";
 
     public final static String USER_SUMMONED = "User has been summoned";
     public final static String HAVE_A_NICE_DAY = "Have a nice day!";

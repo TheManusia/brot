@@ -27,6 +27,7 @@ public class TraceMoeCore {
      * @param callback TraceMoeCallback
      */
     public void getSauce(String image, TraceMoeCallback callback) {
+        logger.info(image);
         traceMoeService.getSauce(image).enqueue(new Callback<Response>() {
             @Override
             public void onResponse(@NotNull Call<Response> call, retrofit2.@NotNull Response<Response> response) {

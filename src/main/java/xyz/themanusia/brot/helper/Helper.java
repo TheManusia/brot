@@ -1,6 +1,9 @@
 package xyz.themanusia.brot.helper;
 
+import net.dv8tion.jda.api.entities.Message;
 import xyz.themanusia.brot.constant.DBText;
+
+import java.util.List;
 
 public class Helper {
 
@@ -24,5 +27,13 @@ public class Helper {
 
     public static String removePrefix(String command) {
         return command.replace(DBText.DEFAULT_PREFIX, "").trim();
+    }
+
+    public static String[] attachmentsToUrls(List<Message.Attachment> list) {
+        String[] urls = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            urls[i] = list.get(i).getUrl();
+        }
+        return urls;
     }
 }

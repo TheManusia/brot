@@ -4,7 +4,9 @@ import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import xyz.themanusia.brot.anime.AnimeListener;
+import xyz.themanusia.brot.commands.AnimeCommand;
+import xyz.themanusia.brot.commands.MangaCommand;
+import xyz.themanusia.brot.commands.SceneCommand;
 import xyz.themanusia.brot.listener.BrotListenerAdapter;
 import xyz.themanusia.brot.listner.Client;
 import xyz.themanusia.brot.listner.ExampleCommand;
@@ -23,10 +25,12 @@ public class Main {
         Client testClient = new Client();
 
         testClient.addCommand(new ExampleCommand());
+        testClient.addCommand(new AnimeCommand());
+        testClient.addCommand(new SceneCommand());
+        testClient.addCommand(new MangaCommand());
 
         JDA client = builder.build();
         client.addEventListener(new SummonListener());
-        client.addEventListener(new AnimeListener());
         client.addEventListener(new BrotListenerAdapter());
         client.addEventListener(testClient);
 
