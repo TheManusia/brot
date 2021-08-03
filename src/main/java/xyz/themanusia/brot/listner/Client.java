@@ -29,10 +29,20 @@ public class Client extends ListenerAdapter {
         }
     }
 
+    /**
+     * Add command to client
+     *
+     * @param command Class extended with {@link Command}
+     */
     public void addCommand(Command command) {
         commands.add(command);
     }
 
+    /**
+     * Add multiple command to client
+     *
+     * @param commands Class extended with {@link Command}
+     */
     public void addCommands(Command... commands) {
         this.commands.addAll(Arrays.asList(commands));
     }

@@ -10,21 +10,60 @@ import java.util.stream.Collectors;
 
 import static xyz.themanusia.brot.listner.Command.ArgumentType.TEXT;
 
+/**
+ * All classes extending with this class will be executed if the {@link Command#name} of command same
+ * with input from user
+ */
 public abstract class Command {
+    /**
+     * The name of the command, allows the command to be called the format: {@code [prefix]<command name>}.
+     */
     protected String name = "";
+
+    /**
+     * Description of the command, will be showen on help command
+     */
     protected String description = "No Description";
+
+    /**
+     * The aliases of the command, when this aliasses called will call {@link Command#name Command.name}
+     */
     protected String[] aliasses = null;
+
+    /**
+     * Argument for command if command need value when called
+     */
     protected String[] argument = null;
+
+    /**
+     * Type of argument, the arguments reference from {@link ArgumentType}
+     */
     protected ArgumentType argType = null;
 
     private final static Logger logger = LoggerFactory.getLogger(Client.class);
 
     enum ArgumentType {
+        /**
+         * Type of argument when the argument is attachment
+         */
         ATTACHMENTS,
+
+        /**
+         * Type of argument when the argument is text
+         */
         TEXT,
+
+        /**
+         * Type of argument when the argument is text and attachment
+         */
         BOTH
     }
 
+    /**
+     * Execute command
+     *
+     * @param event {@link CommandEvent}
+     */
     protected abstract void execute(CommandEvent event);
 
     public void run(CommandEvent event) {
