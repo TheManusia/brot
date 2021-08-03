@@ -28,12 +28,12 @@ public abstract class Command {
     /**
      * The aliases of the command, when this aliasses called will call {@link Command#name Command.name}
      */
-    protected String[] aliasses = null;
+    protected String[] aliasses = new String[]{};
 
     /**
      * Argument for command if command need value when called
      */
-    protected String[] argument = null;
+    protected String[] argument = new String[]{};
 
     /**
      * Type of argument, the arguments reference from {@link ArgumentType}
@@ -42,7 +42,7 @@ public abstract class Command {
 
     private final static Logger logger = LoggerFactory.getLogger(Client.class);
 
-    enum ArgumentType {
+    public enum ArgumentType {
         /**
          * Type of argument when the argument is attachment
          */
@@ -69,30 +69,33 @@ public abstract class Command {
     public void run(CommandEvent event) {
         logger.debug("Command run");
         if (argument != null) {
-            if (event.getRawBody() == null) {
+            if (argType == null) argType = TEXT;
+
+            if (event.getRawBody() == null && argType == TEXT) {
                 event.getMessage().reply(DBText.INSERT_PARAMETER).queue();
                 return;
             }
 
-            String[] args = new String[]{};
-
-            if (argType == null) argType = TEXT;
+            String[] args;
 
             switch (argType) {
                 case ATTACHMENTS:
                     args = (String[]) event.getMessage().getAttachments().stream().map(Message.Attachment::getUrl).toArray();
+                    event.getArgs().addAll(Arrays.stream(args).collect(Collectors.toList()));
                     break;
                 case TEXT:
                     args = event.getRawBody().split(" ");
+                    event.getArgs().addAll(Arrays.stream(args).collect(Collectors.toList()));
                     break;
                 case BOTH:
                     if (!event.getMessage().getAttachments().isEmpty())
-                        args = (String[]) event.getMessage().getAttachments().stream().map(Message.Attachment::getUrl).toArray();
-                    else
+                        event.getArgs().addAll(event.getMessage().getAttachments().stream().map(Message.Attachment::getUrl).collect(Collectors.toList()));
+                    else {
                         args = event.getRawBody().split(" ");
+                        event.getArgs().addAll(Arrays.stream(args).collect(Collectors.toList()));
+                    }
                     break;
             }
-            event.getArgs().addAll(Arrays.stream(args).collect(Collectors.toList()));
         }
         execute(event);
     }

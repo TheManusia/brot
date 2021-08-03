@@ -53,6 +53,7 @@ public class Client extends ListenerAdapter {
     }
 
     private Command checkCommand(String commandName) {
+        commandName = commandName.trim();
         for (Command command : commands) {
             if (command.name.equals(commandName)
                     || Arrays.asList(command.aliasses).contains(commandName))
